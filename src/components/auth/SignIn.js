@@ -31,8 +31,11 @@ class SignIn extends Component {
     }
 
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
+      <div className='form-container'>
+        <form 
+          onSubmit={this.handleSubmit}
+          className='signin-form'
+        >
           <input 
             type='text'
             placeholder='email'
