@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-var config = {
+const config = {
   apiKey: "AIzaSyDSN8I_XgBrIEpoVuma32TDXztHYm74DiY",
   authDomain: "positivedisciplineschweiz.firebaseapp.com",
   databaseURL: "https://positivedisciplineschweiz.firebaseio.com",

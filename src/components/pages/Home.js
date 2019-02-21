@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import CourseList from '../courses/CourseList';
 
 
 class Home extends Component {
 
   render() {
 
-    const { courses, auth } = this.props;
+    const { auth } = this.props;
 
     if (!auth.uid) {
       return <Redirect to='/signin' />
     }
 
     return (
-      <div></div>
+      <div>
+        <CourseList />
+      </div>
     )
   }
 }
