@@ -8,9 +8,20 @@ class CreateCourse extends Component {
     this.state = {
       title: '',
       location: '',
+      time: '',
       date: '',
+      cost: '',
       description: ''
     }
+  }
+
+  componentDidMount() {
+    this.setState({
+      title: 'Einführungskurs: Zum Wohlergehen der ganzen Familie mit der Positiven Disziplin',
+      location: 'Schule Pfrundmatte, 1. Stock (Bibliothek), Meiringen',
+      cost: '150Fr. pro Person. Babysitter Rabatt: 240Fr. für beide Eltern',
+      time: '19.30 - 21.45h',
+    })
   }
 
   handleChange = (event) => {
@@ -47,10 +58,24 @@ class CreateCourse extends Component {
           />
           <input 
             type='text'
+            placeholder='Time'
+            name='time'
+            onChange={this.handleChange}
+            value={this.state.time}
+          />
+          <input 
+            type='text'
             placeholder='Location'
             name='location'
             onChange={this.handleChange}
             value={this.state.location}
+          />
+          <input 
+            type='text'
+            placeholder='Cost'
+            name='cost'
+            onChange={this.handleChange}
+            value={this.state.cost}
           />
           <textarea 
             placeholder='Description of course...'

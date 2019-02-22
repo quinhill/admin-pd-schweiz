@@ -25,7 +25,7 @@ export const updateCourse = (details) => {
     }).then(() => {
       dispatch({ type: 'UPDATE_COURSE_SUCCESS' })
     }).catch((err) => {
-      dispatch({ type: 'UPDATE_COURSE_ERROR', err})
+      dispatch({ type: 'UPDATE_COURSE_ERROR', err })
     })
   }
 };

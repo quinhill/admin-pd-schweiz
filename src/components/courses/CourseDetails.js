@@ -31,6 +31,10 @@ class CourseDetails extends Component {
         >
           {course.title}
         </button>
+        <p>{course.date}</p>
+        <p>{course.time}</p>
+        <p>{course.location}</p>
+        <p>{course.cost}</p>
         <p>{course.description}</p>
         { this.state.edit ? <EditCourse course={course} /> : null }
         <button onClick={this.editCourse}>

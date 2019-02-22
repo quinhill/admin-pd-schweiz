@@ -7,15 +7,28 @@ class EditCourse extends Component {
     super()
     this.state = {
       title: '',
+      date: '',
+      time: '',
+      location: '',
+      cost: '',
       description: ''
     }
   }
 
   componentDidMount() {
-    const { title, description } = this.props.course;
+    const { 
+      title, 
+      description,
+      date,
+      location,
+      cost
+    } = this.props.course;
     this.setState({
       title,
-      description
+      description,
+      date,
+      location,
+      cost
     })
   }
 
@@ -41,7 +54,8 @@ class EditCourse extends Component {
       title: '',
       date: '',
       location: '',
-      description: ''
+      description: '',
+      cost: ''
     })
   }
 
@@ -74,6 +88,12 @@ class EditCourse extends Component {
           onChange={this.handleChange}
           name='location'
           value={this.state.location}
+        />
+        <input
+          type='text'
+          onChange={this.handleChange}
+          name='cost'
+          value={this.state.cost}
         />
         <textarea
           onChange={this.handleChange}
