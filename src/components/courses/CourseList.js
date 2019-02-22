@@ -36,28 +36,30 @@ class CourseList extends Component {
       null;
 
     return (
-      <div className='courselist-container'>
-        { 
-          courses ? courses.map((course, index) => {
-            if (course.id === courseId) {
-              return (
-                <CourseDetails 
-                  course={selectedCourse}
-                  displayCourse={this.displayCourse}
-                  key={index}
-                />
-              )
-            } else {
-              return (
-                <CourseTitle 
-                  course={course} 
-                  displayCourse={this.displayCourse}
-                  key={index}
-                />
-              )
-            }
-          }) : null
-        }
+      <div className='coursepage-container'>
+        <div className='courselist-container'>
+          { 
+            courses ? courses.map((course, index) => {
+              if (course.id === courseId) {
+                return (
+                  <CourseDetails 
+                    course={selectedCourse}
+                    displayCourse={this.displayCourse}
+                    key={index}
+                  />
+                )
+              } else {
+                return (
+                  <CourseTitle 
+                    course={course} 
+                    displayCourse={this.displayCourse}
+                    key={index}
+                  />
+                )
+              }
+            }) : null
+          }
+        </div>
         <CreateCourse />
       </div>
     )

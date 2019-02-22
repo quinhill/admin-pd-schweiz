@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 const CourseTitle = ({course, displayCourse}) => {
 
@@ -8,7 +7,7 @@ const CourseTitle = ({course, displayCourse}) => {
   }
 
   return (
-    <div>
+    <div className='coursetitle-container'>
       <button 
         onClick={handleClick}
         id={course.id}

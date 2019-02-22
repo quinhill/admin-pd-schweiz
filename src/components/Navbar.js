@@ -20,6 +20,7 @@ const Navbar = (props) => {
     <nav>
       <div className='nav-links'>
         <NavLink to='/'>Home</NavLink>
+        <NavLink to='/courses'>Courses</NavLink>
         { links }
       </div>
     </nav>
