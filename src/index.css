@@ -23,7 +23,7 @@ nav {
 }
 
 .nav-links {
-  width: 200px;
+  width: 800px;
   display: flex;
   justify-content: space-around;
 }
