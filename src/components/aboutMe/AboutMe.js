@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'react';
+import { compose } from 'redux';
 import AboutMeForm from './AboutMeForm';
+import { saveAboutMe } from '../../store/actions/aboutMeActions';
+import { firestoreConnect } from 'react-redux-firebase';
 
 class AboutMe extends Component {
   constructor() {
@@ -11,8 +13,12 @@ class AboutMe extends Component {
     }
   }
 
-  addText = () => {
-
+  addText = (id, text) => {
+    const newContent = this.state.content;
+    newContent[id] = text;
+    this.setState({
+      content: newContent
+    })
   }
 
   addParagraph = () => {
@@ -29,8 +35,11 @@ class AboutMe extends Component {
     })
   }
 
+  saveContent = () => {
+    this.props.saveAboutMe(this.state.content)
+  }
+
   render() {
-    console.log(this.state)
 
     const { content } = this.state;
 
@@ -54,9 +63,32 @@ class AboutMe extends Component {
         >
           Add Paragraph
         </button>
+        <button
+          onClick={this.saveContent}
+        >
+          Save New Content
+        </button>
       </div>
     )
   }
 }
 
-export default AboutMe;
+const mapStateToProps = (state) => {
+  console.log(state)
+  return {
+
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveAboutMe: (content) => dispatch(saveAboutMe(content))
+  }
+}
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect([
+    { collection: 'about_kc' }
+  ])
+)(AboutMe);

@@ -9,9 +9,11 @@ class AboutMeForm extends Component {
   }
 
   handleChange = (event) => {
+    const { id, value } = event.target;
     this.setState({
-      text: event.target.value
+      text: value
     })
+    this.props.addText(id, this.state.text)
   }
 
   handlClick = (event) => {
@@ -23,7 +25,7 @@ class AboutMeForm extends Component {
       <div>
         <textarea 
           onChange={this.handleChange}
-          value={this.props.text}
+          value={this.state.text}
           id={this.props.id}
         />
         <button
