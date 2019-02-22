@@ -19,7 +19,9 @@ export const updateCourse = (details) => {
 
     firestore.collection('courses').doc(details.id).set({
       title: details.title,
-      description: details.description
+      description: details.description,
+      date: details.date,
+      location: details.location
     }).then(() => {
       dispatch({ type: 'UPDATE_COURSE_SUCCESS' })
     }).catch((err) => {
