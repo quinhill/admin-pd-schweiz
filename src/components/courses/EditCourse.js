@@ -33,6 +33,16 @@ class EditCourse extends Component {
       id
     }
     this.props.updateCourse(details)
+    this.resetState();
+  }
+
+  resetState = () => {
+    this.setState({
+      title: '',
+      date: '',
+      location: '',
+      description: ''
+    })
   }
 
   render() {
@@ -43,19 +53,37 @@ class EditCourse extends Component {
     } = this.props;
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form 
+        className='course-form'
+        onSubmit={this.handleSubmit}
+      >
         <input
           type='text'
           onChange={this.handleChange}
           name='title'
           value={this.state.title}
         />
+        <input
+          type='text'
+          onChange={this.handleChange}
+          name='date'
+          value={this.state.date}
+        />
+        <input
+          type='text'
+          onChange={this.handleChange}
+          name='location'
+          value={this.state.location}
+        />
         <textarea
           onChange={this.handleChange}
           name='description'
           value={this.state.description}
         />
-        <button type='submit'>
+        <button 
+          type='submit'
+          className='medium-button'
+        >
           Save Changes
         </button>
         <div>

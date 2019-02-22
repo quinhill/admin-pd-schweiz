@@ -7,6 +7,8 @@ class CreateCourse extends Component {
     super()
     this.state = {
       title: '',
+      location: '',
+      date: '',
       description: ''
     }
   }
@@ -25,7 +27,10 @@ class CreateCourse extends Component {
   render() {
     return(
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form 
+          className='course-form'
+          onSubmit={this.handleSubmit}
+        >
           <input 
             type='text'
             placeholder='Course Title'
@@ -33,13 +38,32 @@ class CreateCourse extends Component {
             onChange={this.handleChange}
             value={this.state.title}
           />
+          <input 
+            type='text'
+            placeholder='Date'
+            name='date'
+            onChange={this.handleChange}
+            value={this.state.date}
+          />
+          <input 
+            type='text'
+            placeholder='Location'
+            name='location'
+            onChange={this.handleChange}
+            value={this.state.location}
+          />
           <textarea 
             placeholder='Description of course...'
             name='description'
             onChange={this.handleChange}
             value={this.state.description}
           />
-          <button type='submit'>Submit Course</button>
+          <button 
+            type='submit'
+            className='medium-button'
+          >
+            Submit Course
+          </button>
         </form>
       </div>
     )

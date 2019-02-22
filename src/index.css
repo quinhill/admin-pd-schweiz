@@ -61,3 +61,37 @@ button {
   background: black;
   color: white;
 }
+
+.coursepage-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.courselist-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.coursetitle-container {
+  width: 100%;
+}
+
+.course-form {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+textarea {
+  width: 90%;
+  height: 200px;
+  margin: 10px;
+}
+
+.medium-button {
+  width: 150px;
+  margin-bottom: 20px;
+}
