@@ -83,4 +83,4 @@ export default compose(
   firestoreConnect([
     { collection: 'courses' }
   ])
-) (CourseList);
+)(CourseList);
