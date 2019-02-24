@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { saveAboutMe } from '../../store/actions/aboutMeActions';
-import { firestoreConnect } from 'react-redux-firebase';
 
-class AboutMe extends Component {
+class About extends Component {
   constructor() {
     super();
     this.state = {
@@ -38,7 +34,7 @@ class AboutMe extends Component {
   }
 
   saveContent = () => {
-    this.props.saveAboutMe(this.state.content)
+    this.props.saveContent(this.state.content)
   }
 
   render() {
@@ -83,22 +79,4 @@ class AboutMe extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  console.log(state)
-  return {
-
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    saveAboutMe: (content) => dispatch(saveAboutMe(content))
-  }
-}
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect([
-    { collection: 'about_kc' }
-  ])
-)(AboutMe);
+export default About;

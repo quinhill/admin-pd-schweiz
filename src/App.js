@@ -5,7 +5,8 @@ import SignIn from './components/auth/SignIn';
 import Home from './components/pages/Home';
 import CourseList from './components/courses/CourseList';
 import Navbar from './components/Navbar';
-import AboutMe from './components/aboutMe/AboutMe';
+import AboutKC from './components/about/AboutKC';
+import AboutPd from './components/about/AboutPd';
 
 class App extends Component {
   render() {
@@ -17,7 +18,8 @@ class App extends Component {
             <Route exact path='/' component={Home} />
             <Route path='/signin' component={SignIn} />
             <Route path='/courses' component={CourseList} />
-            <Route path='/aboutme' component={AboutMe} />
+            <Route path='/aboutkc' component={AboutKC} />
+            <Route path='/aboutpd' component={AboutPd} />
           </Switch>
         </div>
       </BrowserRouter>
