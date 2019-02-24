@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import AboutMeForm from './AboutMeForm';
 import { saveAboutMe } from '../../store/actions/aboutMeActions';
 import { firestoreConnect } from 'react-redux-firebase';
 
@@ -13,9 +12,10 @@ class AboutMe extends Component {
     }
   }
 
-  addText = (id, text) => {
+  addText = (event) => {
+    const { id, value } = event.target;
     const newContent = this.state.content;
-    newContent[id] = text;
+    newContent[id] = value;
     this.setState({
       content: newContent
     })
@@ -29,10 +29,12 @@ class AboutMe extends Component {
 
   removeParagraph = (id) => {
     const newContent = this.state.content;
-    newContent.splice(id, 1);
-    this.setState({
-      content: newContent
-    })
+    if (newContent.length > 1) {
+      newContent.splice(id, 1);
+      this.setState({
+        content: newContent
+      })
+    }
   }
 
   saveContent = () => {
@@ -45,13 +47,21 @@ class AboutMe extends Component {
 
     const paragraphs = content.map((text, index) => {
       return (
-        <AboutMeForm
-          text={text}
-          key={index}
-          id={index}
-          addText={this.addText}
-          removeParagraph={this.removeParagraph}
-        />
+        <div key={index}>
+          <textarea
+            text={text}
+            id={index}
+            value={content[index]}
+            onChange={this.addText}
+          />
+          <button
+            disabled={index < 1}
+            onClick={this.removeParagraph}
+            id={index}
+          >
+            Remove Paragraph
+          </button>
+        </div>
       )
     })
 
