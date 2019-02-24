@@ -2,7 +2,6 @@ export const saveAboutMe = (content) => {
   return (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
     const date = new Date().toString();
-    console.log(date)
 
     firestore.collection('about_kc').doc(date).set({
       content
