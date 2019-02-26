@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 const Navbar = (props) => {
 
-  const handleClick = () => {
+  const signOut = () => {
     props.signOut()
   }
 
@@ -21,7 +21,7 @@ const Navbar = (props) => {
   }
 
   const links = auth.uid ? 
-    <a href='auth' onClick={handleClick}>Sign Out</a> :
+    <button onClick={signOut}>Sign Out</button> :
     <NavLink to='/signin'>Sign In</NavLink>;
 
   return (

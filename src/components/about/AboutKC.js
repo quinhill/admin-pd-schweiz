@@ -4,13 +4,23 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { saveAboutKC } from '../../store/actions/aboutActions';
 import { firestoreConnect } from 'react-redux-firebase';
+import { Redirect } from 'react-router-dom';
 
 const AboutKC = (props) => {
 
   const { aboutKC } = props;
   
-  const saveContent = (content) => {
-    props.saveAboutKC(content)
+  const saveContent = (text) => {
+    console.log(text)
+    props.saveAboutKC(text)
+  }
+
+  if (!props.auth.uid) {
+    return <Redirect to='/signin' />
+  }
+
+  if (aboutKC) {
+    console.log(aboutKC)
   }
   
   return (
@@ -18,7 +28,7 @@ const AboutKC = (props) => {
       <About saveContent={saveContent} />
       <h3>Current About KC:</h3>
       { aboutKC ?
-          aboutKC[0].content.map((paragraph, index) => {
+          aboutKC[0].texts.map((paragraph, index) => {
             return (
               <p key={index}>{paragraph}</p>
             )
@@ -31,13 +41,14 @@ const AboutKC = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    aboutKC: state.firestore.ordered.about_kc
+    aboutKC: state.firestore.ordered.about_kc,
+    auth: state.firebase.auth
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveAboutKC: (content) => dispatch(saveAboutKC(content))
+    saveAboutKC: (text) => dispatch(saveAboutKC(text))
   }
 }
 

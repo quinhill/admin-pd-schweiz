@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { saveAboutPd } from '../../store/actions/aboutActions';
 import { firestoreConnect } from 'react-redux-firebase';
+import { Redirect } from 'react-router-dom';
 
 const AboutPd = (props) => {
   
@@ -11,6 +12,10 @@ const AboutPd = (props) => {
     props.saveAboutPd(content)
   }
   
+  if (!props.auth.uid) {
+    return <Redirect to='/signin' />
+  }
+
   return (
     <div>
       <About saveContent={saveContent} />
@@ -29,7 +34,9 @@ const AboutPd = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    aboutPd: state.firestore.ordered.about_pd
+    aboutPd: state.firestore.ordered.about_pd,
+    auth: state.firebase.auth,
+    language: state.language
   }
 }
 

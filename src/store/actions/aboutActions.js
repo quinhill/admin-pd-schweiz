@@ -3,8 +3,7 @@ export const saveAboutKC = (content) => {
     const firestore = getFirestore();
 
     firestore.collection('about_kc').add({
-      content,
-      createdAt: new Date()
+      ...content
     }).then(() => {
       dispatch({ type: 'SAVE_ABOUT_KC_SUCCESS' })
     }).catch((err) => {
@@ -18,8 +17,7 @@ export const saveAboutPd = (content) => {
     const firestore = getFirestore();
 
     firestore.collection('about_pd').add({
-      content,
-      createdAt: new Date()
+      ...content
     }).then(() => {
       dispatch({ type: 'SAVE_ABOUT_PD_SUCCESS' })
     }).catch((err) => {
