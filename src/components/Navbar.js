@@ -5,15 +5,14 @@ import { connect } from 'react-redux';
 
 const Navbar = (props) => {
 
-  const handleClick = () => {
+  const signOut = () => {
     props.signOut()
   }
 
   const { auth } = props;
-  console.log(auth)
 
   const links = auth.uid ? 
-    <a href='' onClick={handleClick}>Sign Out</a> :
+    <button onClick={signOut}>Sign Out</button> :
     <NavLink to='/signin'>Sign In</NavLink>;
 
   return (
@@ -30,14 +29,15 @@ const Navbar = (props) => {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state)
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signOut: () => dispatch(signOut())
+    signOut: () => dispatch(signOut()),
   }
 }
 

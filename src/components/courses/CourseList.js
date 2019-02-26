@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import CreateCourse from './CreateCourse';
+import { Redirect } from 'react-router-dom';
 
 class CourseList extends Component {
   constructor() {
@@ -28,6 +29,10 @@ class CourseList extends Component {
 
   render() {
 
+    if (!this.props.auth.uid) {
+      return <Redirect to='/signin' />
+    }
+
     const { courses } = this.props;
     const { courseId } = this.state;
 
@@ -36,31 +41,28 @@ class CourseList extends Component {
       null;
 
     return (
-      <div className='coursepage-container'>
-        <div className='courselist-container'>
-          { 
-            courses ? courses.map((course, index) => {
-              if (course.id === courseId) {
-                return (
-                  <CourseDetails 
-                    course={selectedCourse}
-                    displayCourse={this.displayCourse}
-                    key={index}
-                  />
-                )
-              } else {
-                return (
-                  <CourseTitle 
-                    course={course} 
-                    displayCourse={this.displayCourse}
-                    key={index}
-                  />
-                )
-              }
-            }) : null
-          }
-        </div>
-        <CreateCourse />
+      <div className='courselist-container'>
+        { 
+          courses ? courses.map((course, index) => {
+            if (course.id === courseId) {
+              return (
+                <CourseDetails 
+                  course={selectedCourse}
+                  displayCourse={this.displayCourse}
+                  key={index}
+                />
+              )
+            } else {
+              return (
+                <CourseTitle 
+                  course={course} 
+                  displayCourse={this.displayCourse}
+                  key={index}
+                />
+              )
+            }
+          }) : null
+        }
       </div>
     )
   }
@@ -68,7 +70,8 @@ class CourseList extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    courses: state.firestore.ordered.courses
+    courses: state.firestore.ordered.courses,
+    auth: state.firebase.auth
   }
 }
 

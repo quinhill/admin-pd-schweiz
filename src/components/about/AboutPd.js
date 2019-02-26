@@ -1,47 +1,50 @@
 import React from 'react';
 import About from './About';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { saveAboutPd } from '../../store/actions/aboutActions';
-import { firestoreConnect } from 'react-redux-firebase';
+import { 
+  saveAboutPDDe,
+  saveAboutPDEn
+} from '../../store/actions/aboutActions';
+import { Redirect } from 'react-router-dom';
+import AboutPDEnglish from './AboutPDEnglish';
+import AboutPDGerman from './AboutPDGerman';
 
-const AboutPd = (props) => {
+const AboutPD = (props) => {
+
+  const {
+    saveAboutPDDe,
+    saveAboutPDEn
+  } = props;
   
   const saveContent = (content) => {
-    props.saveAboutPd(content)
+    content.language === 'DE' ?
+      saveAboutPDDe(content.texts) :
+      saveAboutPDEn(content.texts);
+  }
+
+  if (!props.auth.uid) {
+    return <Redirect to='/signin' />
   }
   
   return (
     <div>
       <About saveContent={saveContent} />
       <h3>Current About PD:</h3>
-      { props.aboutPd ?
-          props.aboutPd[0].content.map((paragraph, index) => {
-            return (
-              <p key={index}>{paragraph}</p>
-            )
-          }) :
-        null
-      }
+      <AboutPDEnglish />
+      <AboutPDGerman />
     </div>
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    aboutPd: state.firestore.ordered.about_pd
-  }
-}
+const mapStateToProps = (state) => ({
+    auth: state.firebase.auth
+  })
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveAboutPd: (content) => dispatch(saveAboutPd(content))
+    saveAboutPDDe: (text) => dispatch(saveAboutPDDe(text)),
+    saveAboutPDEn: (text) => dispatch(saveAboutPDEn(text))
   }
 }
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect([
-    { collection: 'about_pd', limit: 1, orderBy: ['createdAt', 'desc'] }
-  ])
-)(AboutPd);
+export default connect(mapStateToProps, mapDispatchToProps)(AboutPD);

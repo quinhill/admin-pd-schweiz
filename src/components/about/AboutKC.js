@@ -1,49 +1,50 @@
 import React from 'react';
 import About from './About';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { saveAboutKC } from '../../store/actions/aboutActions';
-import { firestoreConnect } from 'react-redux-firebase';
+import { 
+  saveAboutKCDe,
+  saveAboutKCEn
+} from '../../store/actions/aboutActions';
+import { Redirect } from 'react-router-dom';
+import AboutKCEnglish from './AboutKCEnglish';
+import AboutKCGerman from './AboutKCGerman';
 
 const AboutKC = (props) => {
 
-  const { aboutKC } = props;
+  const {
+    saveAboutKCDe,
+    saveAboutKCEn
+  } = props;
   
   const saveContent = (content) => {
-    props.saveAboutKC(content)
+    content.language === 'DE' ?
+      saveAboutKCDe(content.texts) :
+      saveAboutKCEn(content.texts);
+  }
+
+  if (!props.auth.uid) {
+    return <Redirect to='/signin' />
   }
   
   return (
     <div>
       <About saveContent={saveContent} />
       <h3>Current About KC:</h3>
-      { aboutKC ?
-          aboutKC[0].content.map((paragraph, index) => {
-            return (
-              <p key={index}>{paragraph}</p>
-            )
-          }) :
-        null
-      }
+      <AboutKCEnglish />
+      <AboutKCGerman />
     </div>
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    aboutKC: state.firestore.ordered.about_kc
-  }
-}
+const mapStateToProps = (state) => ({
+    auth: state.firebase.auth
+  })
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveAboutKC: (content) => dispatch(saveAboutKC(content))
+    saveAboutKCDe: (text) => dispatch(saveAboutKCDe(text)),
+    saveAboutKCEn: (text) => dispatch(saveAboutKCEn(text))
   }
 }
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect([
-    { collection: 'about_kc', limit: 1, orderBy: ['createdAt', 'desc'] }
-  ])
-)(AboutKC);
+export default connect(mapStateToProps, mapDispatchToProps)(AboutKC);
