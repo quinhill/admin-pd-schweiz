@@ -35,10 +35,8 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
+const mapDispatchToProps = (dispatch) => ({
     signOut: () => dispatch(signOut()),
-  }
-}
+  });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
