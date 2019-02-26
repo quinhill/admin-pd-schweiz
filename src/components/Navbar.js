@@ -10,7 +10,14 @@ const Navbar = (props) => {
   }
 
   const { auth } = props;
-  console.log(auth)
+
+  const makeEng = () => {
+
+  }
+
+  const makeGer = () => {
+
+  }
 
   const links = auth.uid ? 
     <a href='' onClick={handleClick}>Sign Out</a> :
@@ -24,6 +31,10 @@ const Navbar = (props) => {
         <NavLink to='/aboutkc'>About KC</NavLink>
         <NavLink to='/aboutpd'>About PD</NavLink>
         { links }
+        <div>
+          <a href='language' onClick={makeEng}>EN |</a>
+          <a href='language' onClick={makeGer}> DE</a>
+        </div>
       </div>
     </nav>
   )
