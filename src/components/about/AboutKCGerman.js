@@ -23,14 +23,14 @@ const AboutKCGerman = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    aboutKCDe: state.firestore.ordered.about_kc_english,
+    aboutKCDe: state.firestore.ordered.about_kc_german,
   })
 
 export default compose(
   connect(mapStateToProps),
   firestoreConnect([
     { 
-      collection: 'about_kc_german', 
+      collection: 'about_kc_german',
       limit: 1, 
       orderBy: ['createdAt', 'desc'] 
     },

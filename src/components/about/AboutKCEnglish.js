@@ -7,6 +7,8 @@ const AboutKCEnglish = (props) => {
 
   const { aboutKCEn } = props;
 
+  console.log(aboutKCEn)
+
   return (
     <div>
       <h4>English:</h4>

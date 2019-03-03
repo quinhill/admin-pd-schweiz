@@ -35,11 +35,7 @@ class About extends Component {
   }
 
   saveContent = () => {
-    const content = {
-      ...this.state,
-      createdAt: new Date()
-    }
-    this.props.saveContent(content)
+    this.props.saveContent(this.state)
   }
 
   changeLang = (event) => {
