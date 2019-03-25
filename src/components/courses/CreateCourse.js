@@ -37,12 +37,13 @@ class CreateCourse extends Component {
 
   render() {
     return(
-      <div>
+      <div className='course-form-wrapper'>
         <form 
           className='course-form'
           onSubmit={this.handleSubmit}
         >
           <input 
+            className='course-input'
             type='text'
             placeholder='Course Title'
             name='title'
@@ -50,6 +51,7 @@ class CreateCourse extends Component {
             value={this.state.title}
           />
           <input 
+            className='course-input'
             type='text'
             placeholder='Date'
             name='date'
@@ -57,6 +59,7 @@ class CreateCourse extends Component {
             value={this.state.date}
           />
           <input 
+            className='course-input'
             type='text'
             placeholder='Time'
             name='time'
@@ -64,6 +67,7 @@ class CreateCourse extends Component {
             value={this.state.time}
           />
           <input 
+            className='course-input'
             type='text'
             placeholder='Location'
             name='location'
@@ -71,6 +75,7 @@ class CreateCourse extends Component {
             value={this.state.location}
           />
           <input 
+            className='course-input'
             type='text'
             placeholder='Cost'
             name='cost'
