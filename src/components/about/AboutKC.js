@@ -1,6 +1,8 @@
 import React from 'react';
 import About from './About';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 import { 
   saveAboutKCDe,
   saveAboutKCEn
@@ -13,8 +15,12 @@ const AboutKC = (props) => {
 
   const {
     saveAboutKCDe,
-    saveAboutKCEn
+    saveAboutKCEn,
+    aboutKCEn,
+    aboutKCDe
   } = props;
+
+  console.log(aboutKCDe)
   
   const saveContent = (content) => {
     content.language === 'DE' ?
@@ -30,14 +36,16 @@ const AboutKC = (props) => {
     <div>
       <About saveContent={saveContent} />
       <h3>Current About KC:</h3>
-      <AboutKCEnglish />
-      <AboutKCGerman />
+      <AboutKCEnglish text={aboutKCEn} />
+      <AboutKCGerman text={aboutKCDe} />
     </div>
   )
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    aboutKCEn: state.firestore.ordered.about_kc_english,
+    aboutKCDe: state.firestore.ordered.about_kc_german
   })
 
 const mapDispatchToProps = (dispatch) => {
@@ -47,4 +55,18 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AboutKC);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect([
+    { 
+      collection: 'about_kc_english', 
+      limit: 1, 
+      orderBy: ['createdAt', 'desc'] 
+    },
+    {
+      collection: 'about_kc_german',
+      limit: 1,
+      orderBy: ['createdAt', 'desc']
+    }
+  ])
+)(AboutKC);

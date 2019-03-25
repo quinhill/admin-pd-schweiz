@@ -24,7 +24,8 @@ class About extends Component {
     })
   }
 
-  removeParagraph = (id) => {
+  removeParagraph = (event) => {
+    const { id } = event.target;
     const newContent = this.state.texts;
     if (newContent.length > 1) {
       newContent.splice(id, 1);
@@ -51,7 +52,7 @@ class About extends Component {
 
     const paragraphs = texts.map((text, index) => {
       return (
-        <div key={index}>
+        <div className='textarea-wrapper' key={index}>
           <textarea
             text={text}
             id={index}
@@ -59,6 +60,7 @@ class About extends Component {
             onChange={this.addText}
           />
           <button
+            className='medium-button'
             disabled={index < 1}
             onClick={this.removeParagraph}
             id={index}
@@ -70,32 +72,36 @@ class About extends Component {
     })
 
     return (
-      <div>
+      <div className='about-wrapper'>
         {paragraphs}
         <button
           onClick={this.addParagraph}
         >
           Add Paragraph
         </button>
-        <form>
-          <label htmlFor='german'>German</label>
-          <input 
-            id='german'
-            type='radio'
-            name='language'
-            value='DE'
-            checked={this.state.language === 'DE'}
-            onChange={this.changeLang}
-          />
-          <label htmlFor='english'>English</label>
-          <input 
-            id='english'
-            type='radio'
-            name='language'
-            value='EN'
-            checked={this.state.language === 'EN'}
-            onChange={this.changeLang}
-          />
+        <form className='lang-form'>
+          <div className='radio-wrapper'>
+            <label htmlFor='german'>German</label>
+            <input 
+              id='german'
+              type='radio'
+              name='language'
+              value='DE'
+              checked={this.state.language === 'DE'}
+              onChange={this.changeLang}
+            />
+          </div>
+          <div className='radio-wrapper'>
+            <label htmlFor='english'>English</label>
+            <input 
+              id='english'
+              type='radio'
+              name='language'
+              value='EN'
+              checked={this.state.language === 'EN'}
+              onChange={this.changeLang}
+            />
+          </div>
         </form>
         <button
           onClick={this.saveContent}
