@@ -1,6 +1,8 @@
 import React from 'react';
 import About from './About';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 import { 
   saveAboutPDDe,
   saveAboutPDEn
@@ -13,7 +15,9 @@ const AboutPD = (props) => {
 
   const {
     saveAboutPDDe,
-    saveAboutPDEn
+    saveAboutPDEn,
+    aboutPDDe,
+    aboutPDEn
   } = props;
   
   const saveContent = (content) => {
@@ -30,14 +34,16 @@ const AboutPD = (props) => {
     <div>
       <About saveContent={saveContent} />
       <h3>Current About PD:</h3>
-      <AboutPDEnglish />
-      <AboutPDGerman />
+      <AboutPDEnglish text={aboutPDEn} />
+      <AboutPDGerman text={aboutPDDe} />
     </div>
   )
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    aboutPDEn: state.firestore.ordered.about_pd_english,
+    aboutPDDe: state.firestore.ordered.about_pd_german
   })
 
 const mapDispatchToProps = (dispatch) => {
@@ -47,4 +53,18 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AboutPD);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect([
+    {
+      collection: 'about_pd_english',
+      limit: 1,
+      orderBy: ['createdAt', 'desc']
+    },
+    {
+      collection: 'about_pd_german',
+      limit: 1,
+      orderBy: ['createdAt', 'desc']
+    }
+  ])
+)(AboutPD);
