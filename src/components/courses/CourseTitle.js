@@ -9,6 +9,7 @@ const CourseTitle = ({course, displayCourse}) => {
   return (
     <div className='coursetitle-container'>
       <button 
+        className='medium-button course-button'
         onClick={handleClick}
         id={course.id}
       >

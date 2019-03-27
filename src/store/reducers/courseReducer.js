@@ -16,6 +16,26 @@ const courseReducer = (state = {}, action) => {
         updateSuccess: null,
         updateError: action.err.message
       }
+    case 'DELETE_COURSE_SUCCESS':
+      return {
+        ...state,
+        updateSuccess: `The course with the ID: ${action.id} has been successfully deleted`,
+        updateError: null,
+      }
+      case 'DELETE_COURSE_ERROR':
+      return {
+        ...state,
+        updateSuccess: null,
+        updateError: action.err.message
+      }
+      case 'ADD_EXISTING':
+        return {
+          ...state,
+          updateSuccess: null,
+          updateError: 'It appears you have already created a course on that day. Please edit that course or change the date of the new course you are trying to create.'
+        }
+      case 'RESET_STATE':
+        return {};
     default:
       return state
   }

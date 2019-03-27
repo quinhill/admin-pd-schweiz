@@ -13,6 +13,11 @@ code {
     monospace;
 }
 
+p, h1, h2, h3, h4, h5 {
+  margin: 5px;
+  text-align: start;
+}
+
  nav {
   height: 40px;
   width: 100%;
@@ -20,64 +25,25 @@ code {
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
+  border-bottom: 1px solid black;
+  background: lightgrey;
 }
 
 .nav-links {
   width: 800px;
   display: flex;
   justify-content: space-around;
-}
-
-/*.form-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.signin-form {
-  width: 400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid black;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-input {
-  height: 20px;
-  margin: 10px;
-  width: 90%;
-  border-radius: 20px;
-  border: 1px solid black;
-  padding-left: 10px;
-}
-
-button {
-  height: 20px;
-  width: 30%;
-  border-radius: 20px;
-  border: 1px solid black;
-  background: black;
-  color: white;
-}
-
-.coursepage-container {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 50% 50%;
-}
-
-.courselist-container {
-  display: flex;
-  flex-direction: column;
   align-items: center;
 }
 
-.coursetitle-container {
-  width: 100%;
+.nav-link {
+  text-decoration: none;
+  color: black;
 }
-*/
+
+.nav-link:hover {
+  font-weight: bold;
+}
 
 .course-form-wrapper {
   width: 100%;
@@ -100,6 +66,37 @@ button {
   padding-left: 5px;
 }
 
+.courselist-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.course-container {
+  width: 50%;
+  margin-bottom: 20px;
+  padding: 10px;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.course-details-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.course-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 30px;
+}
+
+.description {
+  font-weight: bold;
+}
+
 .textarea-wrapper {
   width: 100%;
   display: flex;
@@ -118,7 +115,26 @@ textarea {
 
 .medium-button {
   width: 150px;
-  margin-bottom: 20px;
+  height: 30px;
+  font-size: 15px;
+  background: rgb(155, 154, 154);
+  color: white;
+}
+
+.medium-button:hover {
+  background: rgb(83, 83, 83);
+}
+
+.sign-out-button {
+  margin: 0;
+}
+
+.course-button {
+  margin-bottom: 5px;
+}
+
+.delete-button:hover {
+  background: red;
 }
 
 .about-wrapper {
@@ -127,10 +143,7 @@ textarea {
   flex-direction: column;
   align-items: center;
 }
-/*
-.lang-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-} */
+
+.error-message {
+  color: red;
+}
