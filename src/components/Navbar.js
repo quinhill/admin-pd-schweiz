@@ -12,16 +12,21 @@ const Navbar = (props) => {
   const { auth } = props;
 
   const links = auth.uid ? 
-    <button onClick={signOut}>Sign Out</button> :
+    <button 
+      className='medium-button sign-out-button' 
+      onClick={signOut}
+    >
+      Sign Out
+    </button> :
     <NavLink to='/signin'>Sign In</NavLink>;
 
   return (
     <nav>
       <div className='nav-links'>
-        <NavLink to='/'>Home</NavLink>
-        <NavLink to='/courses'>Courses</NavLink>
-        <NavLink to='/aboutkc'>About KC</NavLink>
-        <NavLink to='/aboutpd'>About PD</NavLink>
+        <NavLink className='nav-link' to='/'>Home</NavLink>
+        <NavLink className='nav-link' to='/courses'>Courses</NavLink>
+        <NavLink className='nav-link' to='/aboutkc'>About KC</NavLink>
+        <NavLink className='nav-link' to='/aboutpd'>About PD</NavLink>
         { links }
       </div>
     </nav>

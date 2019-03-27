@@ -4,8 +4,8 @@ import CourseDetails from './CourseDetails';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
-import CreateCourse from './CreateCourse';
 import { Redirect } from 'react-router-dom';
+import { deleteCourse } from '../../store/actions/courseActions';
 
 class CourseList extends Component {
   constructor() {
@@ -25,6 +25,10 @@ class CourseList extends Component {
         courseId: id
       })
     }
+  }
+
+  deleteCourse = (id) => {
+    this.props.deleteCourse(id)
   }
 
   render() {
@@ -49,6 +53,7 @@ class CourseList extends Component {
                 <CourseDetails 
                   course={selectedCourse}
                   displayCourse={this.displayCourse}
+                  deleteCourse={this.deleteCourse}
                   key={index}
                 />
               )
@@ -77,13 +82,15 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    deleteCourse: (id) => dispatch(deleteCourse(id))
   }
 }
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect([
-    { collection: 'courses' }
+    { 
+      collection: 'courses',
+    }
   ])
 )(CourseList);

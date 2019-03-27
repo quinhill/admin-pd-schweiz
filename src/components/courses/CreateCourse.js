@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createCourse } from '../../store/actions/courseActions';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import { createCourse, addExisting, resetState } from '../../store/actions/courseActions';
+
+const initialState = {
+  title: 'Einführungskurs',
+  location: 'Schule Pfrundmatte, 1. Stock (Bibliothek), Meiringen',
+  cost: '150Fr. pro Person. Babysitter Rabatt: 240Fr. für beide Eltern',
+  time: '19.30 - 21.45h',
+  description: 'Zum Wohlergehen der ganzen Familie mit der Positiven Disziplin'
+}
 
 class CreateCourse extends Component {
   constructor() {
@@ -16,12 +26,7 @@ class CreateCourse extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      title: 'Einführungskurs: Zum Wohlergehen der ganzen Familie mit der Positiven Disziplin',
-      location: 'Schule Pfrundmatte, 1. Stock (Bibliothek), Meiringen',
-      cost: '150Fr. pro Person. Babysitter Rabatt: 240Fr. für beide Eltern',
-      time: '19.30 - 21.45h',
-    })
+    this.setState(initialState)
   }
 
   handleChange = (event) => {
@@ -32,16 +37,32 @@ class CreateCourse extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.createCourse(this.state)
+    const { courses } = this.props;
+    const existing = courses.find(course => course.date === this.state.date)
+    if (existing) {
+      this.props.addExisting();
+    } else {
+      this.props.resetState();
+      this.props.createCourse(this.state);
+      this.setState(initialState);
+    }
   }
 
   render() {
+
+    const { updateMessage } = this.props;
+
     return(
       <div className='course-form-wrapper'>
         <form 
           className='course-form'
           onSubmit={this.handleSubmit}
         >
+          { 
+            updateMessage ? 
+              <p className='error-message'>{updateMessage}</p> :
+              null
+          }
           <input 
             className='course-input'
             type='text'
@@ -100,10 +121,22 @@ class CreateCourse extends Component {
   }
 };
 
+const mapStateToProps = (state) => ({
+  courses: state.firestore.ordered.courses,
+  updateMessage: state.courses.updateError
+})
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    createCourse: (course) => dispatch(createCourse(course))
+    createCourse: (course) => dispatch(createCourse(course)),
+    addExisting: () => dispatch(addExisting()),
+    resetState: () => dispatch(resetState())
   }
 }
 
-export default connect(null, mapDispatchToProps)(CreateCourse);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect([
+    { collection: 'courses' }
+  ])
+)(CreateCourse);
