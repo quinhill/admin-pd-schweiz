@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { Redirect } from 'react-router-dom';
-import { deleteCourse } from '../../store/actions/courseActions';
+import { deleteCourse, resetState } from '../../store/actions/courseActions';
 
 class CourseList extends Component {
   constructor() {
@@ -20,10 +20,12 @@ class CourseList extends Component {
       this.setState({
         courseId: ''
       })
+      this.props.resetState();
     } else {
       this.setState({
         courseId: id
       })
+      this.props.resetState();
     }
   }
 
@@ -32,7 +34,6 @@ class CourseList extends Component {
   }
 
   render() {
-
     if (!this.props.auth.uid) {
       return <Redirect to='/signin' />
     }
@@ -44,10 +45,13 @@ class CourseList extends Component {
       courses.find(course => course.id === courseId) :
       null;
 
+    const current = new Date().getTime();
+
     return (
       <div className='courselist-container'>
         { 
           courses ? courses.map((course, index) => {
+          //   const courseTime = parseInt(`${course.date.seconds}000`)
             if (course.id === courseId) {
               return (
                 <CourseDetails 
@@ -82,7 +86,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deleteCourse: (id) => dispatch(deleteCourse(id))
+    deleteCourse: (id) => dispatch(deleteCourse(id)),
+    resetState: () => dispatch(resetState())
   }
 }
 
@@ -90,7 +95,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect([
     { 
-      collection: 'courses',
+      collection: 'courses'
     }
   ])
 )(CourseList);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateCourse } from '../../store/actions/courseActions'
+import { updateCourse, resetState } from '../../store/actions/courseActions'
 
 class EditCourse extends Component {
   constructor() {
@@ -53,7 +53,8 @@ class EditCourse extends Component {
     };
     const existingValue = this.checkExisting(details)
     if (!existingValue) {
-      return this.props.updateCourse(details)
+      this.props.updateCourse(details)
+      this.props.editCourse();
     }
   }
 
@@ -98,14 +99,14 @@ class EditCourse extends Component {
             />
           <input
             className='course-input'
-            type='text'
+            type='date'
             onChange={this.handleChange}
             name='date'
             value={this.state.date}
             />
           <input
             className='course-input'
-            type='text'
+            type='time'
             onChange={this.handleChange}
             name='time'
             value={this.state.time}
@@ -155,7 +156,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateCourse: (details) => dispatch(updateCourse(details))
+    updateCourse: (details) => dispatch(updateCourse(details)),
+    resetState: () => dispatch(resetState())
   }
 }
 
