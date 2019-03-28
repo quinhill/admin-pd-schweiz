@@ -1,9 +1,14 @@
 export const createCourse = (course) => {
-  return (dispatch, getState, { getFirestore, getFirebase }) => {
+  return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
+    console.log(course.time)
+
+    const dateTime = `${course.date} ${course.time}`
+    const date = new Date(dateTime)
 
     firestore.collection('courses').add({
       ...course,
+      date,
       createdAt: new Date()
     }).then(() => {
       dispatch({ type: 'CREATE_COURSE', course });
@@ -15,17 +20,18 @@ export const createCourse = (course) => {
 
 
 export const updateCourse = (details) => {
-  return (dispatch, {getFirestore}) => {
+  return (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
+
+    const dateTime = `${details.date} ${details.time}`;
 
     firestore.collection('courses').doc(details.id).set({
       title: details.title,
       location: details.location,
       time: details.time,
-      date: details.date,
+      date: new Date(dateTime),
       cost: details.cost,
       description: details.description,
-      participants: details.participants
     }).then(() => {
       dispatch({ type: 'UPDATE_COURSE_SUCCESS' })
     }).catch((err) => {
@@ -35,8 +41,7 @@ export const updateCourse = (details) => {
 };
 
 export const deleteCourse = (id) => {
-  console.log(id)
-  return (dispatch, {getFirestore}) => {
+  return (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
 
     firestore.collection('courses').doc(id).delete().then(() => {

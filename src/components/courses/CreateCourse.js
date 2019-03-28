@@ -8,7 +8,6 @@ const initialState = {
   title: 'Einführungskurs',
   location: 'Schule Pfrundmatte, 1. Stock (Bibliothek), Meiringen',
   cost: '150Fr. pro Person. Babysitter Rabatt: 240Fr. für beide Eltern',
-  time: '19.30 - 21.45h',
   description: 'Zum Wohlergehen der ganzen Familie mit der Positiven Disziplin'
 }
 
@@ -73,7 +72,7 @@ class CreateCourse extends Component {
           />
           <input 
             className='course-input'
-            type='text'
+            type='date'
             placeholder='Date'
             name='date'
             onChange={this.handleChange}
@@ -81,7 +80,7 @@ class CreateCourse extends Component {
           />
           <input 
             className='course-input'
-            type='text'
+            type='time'
             placeholder='Time'
             name='time'
             onChange={this.handleChange}

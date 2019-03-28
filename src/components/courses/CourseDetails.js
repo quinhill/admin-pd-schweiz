@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import EditCourse from './EditCourse';
+import moment from 'moment';
+import { DateTime } from 'luxon';
 
 class CourseDetails extends Component {
   constructor() {
@@ -27,11 +29,12 @@ class CourseDetails extends Component {
   render() {
 
     const { course } = this.props;
+    const date = moment(course.date.toDate()).format('dddd, LL');
 
     return (
       <div className='course-container'>
         <button
-          className='medium-button'
+          className='medium-button course-button'
           onClick={this.hideDetails}
           id={course.id}
         >
@@ -42,7 +45,7 @@ class CourseDetails extends Component {
           <div className='course-details'>
             <p>
               <span className='description'>Date: </span>
-              {course.date}
+              {date}
             </p>
             <p>
               <span className='description'>Time: </span>
@@ -78,7 +81,10 @@ class CourseDetails extends Component {
         </div>
         { 
           this.state.edit ? 
-            <EditCourse course={course} /> : 
+            <EditCourse 
+              course={course} 
+              editCourse={this.editCourse} 
+            /> : 
             null 
         }
         <button 

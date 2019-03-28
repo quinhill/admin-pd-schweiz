@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { Redirect } from 'react-router-dom';
-import { deleteCourse } from '../../store/actions/courseActions';
+import { deleteCourse, resetState } from '../../store/actions/courseActions';
 
 class CourseList extends Component {
   constructor() {
@@ -20,10 +20,12 @@ class CourseList extends Component {
       this.setState({
         courseId: ''
       })
+      this.props.resetState();
     } else {
       this.setState({
         courseId: id
       })
+      this.props.resetState();
     }
   }
 
@@ -82,7 +84,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deleteCourse: (id) => dispatch(deleteCourse(id))
+    deleteCourse: (id) => dispatch(deleteCourse(id)),
+    resetState: () => dispatch(resetState())
   }
 }
 
