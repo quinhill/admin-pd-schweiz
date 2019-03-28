@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import EditCourse from './EditCourse';
 import moment from 'moment';
-import { DateTime } from 'luxon';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 
 class CourseDetails extends Component {
   constructor() {
@@ -28,9 +30,10 @@ class CourseDetails extends Component {
 
   render() {
 
+    console.log(this.props.participants)
+
     const { course } = this.props;
     const date = moment(course.date.toDate()).format('dddd, LL');
-
     return (
       <div className='course-container'>
         <button
@@ -66,17 +69,6 @@ class CourseDetails extends Component {
           </div>
           <div className='course-details'>
             <h3>Participants:</h3>
-            {/* {
-              course.participants.map((participant, index) => {
-                return (
-                  <p
-                    key={index}
-                  >
-                    {participant.lastName}, {participant.firstName}
-                  </p>
-                )
-              })
-            } */}
           </div>
         </div>
         { 
@@ -105,4 +97,18 @@ class CourseDetails extends Component {
   }
 }
 
-export default CourseDetails;
+const mapStateToProps = (state) => ({
+  participants: state.firestore.ordered.course_participants
+})
+
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect(props => {
+    return [
+      { 
+        collection: 'course_participants',
+        doc: props.course.id
+      }
+    ]
+  })
+) (CourseDetails);

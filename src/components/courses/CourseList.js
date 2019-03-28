@@ -34,7 +34,6 @@ class CourseList extends Component {
   }
 
   render() {
-
     if (!this.props.auth.uid) {
       return <Redirect to='/signin' />
     }
@@ -46,10 +45,13 @@ class CourseList extends Component {
       courses.find(course => course.id === courseId) :
       null;
 
+    const current = new Date().getTime();
+
     return (
       <div className='courselist-container'>
         { 
           courses ? courses.map((course, index) => {
+          //   const courseTime = parseInt(`${course.date.seconds}000`)
             if (course.id === courseId) {
               return (
                 <CourseDetails 
@@ -93,7 +95,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect([
     { 
-      collection: 'courses',
+      collection: 'courses'
     }
   ])
 )(CourseList);

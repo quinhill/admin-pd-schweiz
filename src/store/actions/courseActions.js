@@ -10,6 +10,8 @@ export const createCourse = (course) => {
       ...course,
       date,
       createdAt: new Date()
+    }).then((res) => {
+      firestore.collection('course_participants').doc(res.id).set({'participants': []});
     }).then(() => {
       dispatch({ type: 'CREATE_COURSE', course });
     }).catch((err) => {
@@ -45,6 +47,11 @@ export const deleteCourse = (id) => {
     const firestore = getFirestore();
 
     firestore.collection('courses').doc(id).delete().then(() => {
+      dispatch({ type: 'DELETE_COURSE_SUCCESS', id })
+    }).catch((err) => {
+      dispatch({ type: 'DELETE_COURSE_ERROR', err })
+    })
+    firestore.collection('course_participants').doc(id).delete().then(() => {
       dispatch({ type: 'DELETE_COURSE_SUCCESS', id })
     }).catch((err) => {
       dispatch({ type: 'DELETE_COURSE_ERROR', err })
