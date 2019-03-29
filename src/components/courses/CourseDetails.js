@@ -30,9 +30,9 @@ class CourseDetails extends Component {
 
   render() {
 
-    console.log(this.props.participants)
+    
+    const { course, list } = this.props;
 
-    const { course } = this.props;
     const date = moment(course.date.toDate()).format('dddd, LL');
     return (
       <div className='course-container'>
@@ -69,6 +69,17 @@ class CourseDetails extends Component {
           </div>
           <div className='course-details'>
             <h3>Participants:</h3>
+            {
+              list ?
+                list.participants.map((participant, index) => {
+                  return(
+                    <p key={index}>
+                    {participant.firstName} {participant.lastName}
+                    </p>
+                  )
+                }) :
+                null
+            }
           </div>
         </div>
         { 
@@ -97,9 +108,13 @@ class CourseDetails extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  participants: state.firestore.ordered.course_participants
-})
+const mapStateToProps = (state) => {
+  return {
+    courseList: state.firestore.data.course_participants,
+    signedUp: state.firestore.ordered.users
+  }
+}
+
 
 export default compose(
   connect(mapStateToProps),
@@ -108,6 +123,7 @@ export default compose(
       { 
         collection: 'course_participants',
         doc: props.course.id
+
       }
     ]
   })

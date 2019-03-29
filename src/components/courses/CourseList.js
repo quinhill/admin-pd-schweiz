@@ -38,11 +38,15 @@ class CourseList extends Component {
       return <Redirect to='/signin' />
     }
 
-    const { courses } = this.props;
+    const { courses, participants } = this.props;
     const { courseId } = this.state;
 
     const selectedCourse = courseId ?
       courses.find(course => course.id === courseId) :
+      null;
+    
+    const selectedParticipants = courseId ?
+      participants.find(list => list.id === courseId) :
       null;
 
     const current = new Date().getTime();
@@ -56,6 +60,7 @@ class CourseList extends Component {
               return (
                 <CourseDetails 
                   course={selectedCourse}
+                  list={selectedParticipants}
                   displayCourse={this.displayCourse}
                   deleteCourse={this.deleteCourse}
                   key={index}
@@ -80,6 +85,7 @@ class CourseList extends Component {
 const mapStateToProps = (state) => {
   return {
     courses: state.firestore.ordered.courses,
+    participants: state.firestore.ordered.course_participants,
     auth: state.firebase.auth
   }
 }
@@ -95,7 +101,9 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect([
     { 
-      collection: 'courses'
-    }
+      collection: 'courses',
+      orderBy: ['date', 'asc']
+    },
+    { collection: 'course_participants' }
   ])
 )(CourseList);
