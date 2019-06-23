@@ -55,7 +55,6 @@ class CourseList extends Component {
       <div className='courselist-container'>
         { 
           courses ? courses.map((course, index) => {
-          //   const courseTime = parseInt(`${course.date.seconds}000`)
             if (course.id === courseId) {
               return (
                 <CourseDetails 

@@ -23,8 +23,8 @@ const Navbar = (props) => {
   return (
     <nav>
       <div className='nav-links'>
-        <NavLink className='nav-link' to='/'>Home</NavLink>
         <NavLink className='nav-link' to='/courses'>Courses</NavLink>
+        <NavLink className='nav-link' to='/users'>Users</NavLink>
         <NavLink className='nav-link' to='/aboutkc'>About KC</NavLink>
         <NavLink className='nav-link' to='/aboutpd'>About PD</NavLink>
         { links }

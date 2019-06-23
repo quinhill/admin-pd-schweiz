@@ -152,3 +152,7 @@ textarea {
 .error-message {
   color: red;
 }
+
+.list-item {
+  display: flex;
+}
