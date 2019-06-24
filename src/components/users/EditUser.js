@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { updateUser } from '../../store/actions/userActions';
 
 class EditUser extends Component {
   constructor() {
@@ -35,7 +37,7 @@ class EditUser extends Component {
       lastName,
       phone,
       uid,
-      zip
+      zip,
     })
   }
 
@@ -45,9 +47,17 @@ class EditUser extends Component {
     });
   };
 
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const details = { ...this.state }
+    this.props.updateUser(details);
+  }
+
   render() {
     return (
-      <form>
+      <form
+        onSubmit={this.handleSubmit}
+      >
         <input 
           className='edit-user-input'
           type='text'
@@ -90,9 +100,29 @@ class EditUser extends Component {
           name='city'
           value={this.state.city}
         />
+        <input 
+          className='edit-user-input'
+          type='text'
+          onChange={this.handleChange}
+          name='phone'
+          value={this.state.phone}
+        />
+        <button
+          type='submit'
+        >
+          Save Changes
+        </button>
       </form>
     ) 
   }
 }
 
-export default EditUser;
+const mapStateToProps = (state) => ({
+  user: state.users
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  updateUser: (details) => dispatch(updateUser(details))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditUser);
