@@ -18,8 +18,17 @@ class UserList extends Component {
 
 
     return (
-      <div>
+      <div className='user-container'>
         <h1>Users</h1>
+        <div className='user-list-header-container'>
+          <h4 className='user-detail'>First Name</h4>
+          <h4 className='user-detail'>Last Name</h4>
+          <h4 className='user-detail'>Email</h4>
+          <h4 className='user-detail'>Address</h4>
+          <h4 className='user-detail' id='short'>Zip</h4>
+          <h4 className='user-detail'>City</h4>
+          <h4 className='user-detail' id='long'>User ID</h4>
+        </div>
         {
           users ? users.map((user, index) => {
             return (
