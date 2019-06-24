@@ -153,6 +153,26 @@ textarea {
   color: red;
 }
 
+.user-container {
+  margin-left: 20px;
+}
+
+.user-list-header-container {
+  display: flex;
+}
+
 .list-item {
   display: flex;
+}
+
+.user-detail {
+  min-width: 200px;
+}
+
+#long {
+  width: 320px;
+}
+
+#short {
+  width: 100px;
 }
