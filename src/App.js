@@ -7,7 +7,6 @@ import Navbar from './components/Navbar';
 import AboutKC from './components/about/AboutKC';
 import AboutPd from './components/about/AboutPd';
 import UserList from './components/users/UserList';
-import AdminInput from './components/auth/AdminInput';
 
 class App extends Component {
   render() {
@@ -15,7 +14,6 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <Navbar />
-          <AdminInput />
           <Switch>
             <Route exact path='/' component={Courses} />
             <Route path='/signin' component={SignIn} />
