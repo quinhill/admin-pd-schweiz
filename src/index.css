@@ -170,9 +170,9 @@ textarea {
 }
 
 #long {
-  width: 320px;
+  min-width: 320px;
 }
 
 #short {
-  width: 100px;
+  min-width: 100px;
 }

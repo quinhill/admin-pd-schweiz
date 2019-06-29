@@ -1,3 +1,5 @@
+import firebase from '../../config/fbConfig';
+
 export const updateUser = (details) => {
   return (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
@@ -27,3 +29,34 @@ export const updateUser = (details) => {
     })
   }
 };
+
+export const deleteUser = (uid) => {
+  return (dispatch, getState, {getFirestore, getFirebase}) => {
+    const firestore = getFirestore();
+    const firebase = getFirebase();
+    const functions = firebase.functions();
+
+    firestore.collection('users').doc(uid).delete()
+    .then(() => {
+      dispatch({ type: 'DELETE_USER_SUCCESS', uid })
+    }).catch((err) => {
+      dispatch({ type: 'DELETE_USER_ERROR', err})
+    })
+
+    const deleteUser = functions.httpsCallable('deleteUser');
+
+    deleteUser({ uid }).then(result => {
+      console.log(result);
+    })
+  }
+}
+
+export const makeAdmin = async (data) => {
+  const functions = firebase.functions();
+
+  const addAdminRole = functions.httpsCallable('addAdminRole');
+
+  addAdminRole({email: data}).then(result => {
+    console.log(result)
+  })
+}
