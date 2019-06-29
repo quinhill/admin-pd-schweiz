@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { signOut } from '../store/actions/authActions';
 import { connect } from 'react-redux';
+import firebase from '../config/fbConfig';
 
 const Navbar = (props) => {
 
@@ -9,9 +10,9 @@ const Navbar = (props) => {
     props.signOut()
   }
 
-  const { auth } = props;
+  const { authStatus } = props;
 
-  const links = auth.uid ? 
+  const links = authStatus.uid ? 
     <button 
       className='medium-button sign-out-button' 
       onClick={signOut}
@@ -19,6 +20,16 @@ const Navbar = (props) => {
       Sign Out
     </button> :
     <NavLink to='/signin'>Sign In</NavLink>;
+
+  const auth = firebase.auth();
+
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      user.getIdTokenResult().then(IdTokenResult => {
+        console.log(IdTokenResult.claims)
+      })
+    }
+  })
 
   return (
     <nav>
@@ -36,7 +47,7 @@ const Navbar = (props) => {
 const mapStateToProps = (state) => {
   console.log(state)
   return {
-    auth: state.firebase.auth,
+    authStatus: state.firebase.auth,
   }
 }
 

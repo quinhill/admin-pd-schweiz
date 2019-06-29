@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import EditUser from './EditUser';
+import DeletePrompt from './DeletePrompt';
+import { connect } from 'react-redux';
+import { deleteUser } from '../../store/actions/userActions';
 
 class UserDetails extends Component {
   constructor() {
     super()
     this.state = {
-      edit: false
+      edit: false,
+      shouldDelete: false,
     }
   }
 
@@ -13,8 +17,15 @@ class UserDetails extends Component {
     this.setState({ edit: !this.state.edit })
   }
 
+  toggleDeletePrompt = (event) => {
+    this.setState({ shouldDelete: !this.state.shouldDelete})
+  }
+
+  deleteUser = (uid) => {
+    this.props.deleteUser(uid)
+  }
+
   render() {
-    console.log(this.props)
 
     const {
       address,
@@ -44,8 +55,10 @@ class UserDetails extends Component {
             Edit
           </button>
           <button
-
-  >
+            className='delete-button'
+            id={uid}
+            onClick={this.toggleDeletePrompt}
+          >
             Delete
           </button>
         </div>
@@ -54,9 +67,26 @@ class UserDetails extends Component {
             <EditUser userDetails={this.props.user} /> :
             null
           }
+          {
+            this.state.shouldDelete ?
+              <DeletePrompt 
+                user={this.props.user}
+                toggleDeletePrompt={this.toggleDeletePrompt}
+                deleteUser={this.deleteUser}
+              /> :
+              null
+          }
       </div>
     )
   }
 }
 
-export default UserDetails;
+const mapStateToProps = (state) => ({
+  deleteMessage: state.users
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  deleteUser: (uid) => dispatch(deleteUser(uid))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserDetails);

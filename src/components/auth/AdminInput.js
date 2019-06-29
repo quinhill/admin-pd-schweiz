@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { signIn } from '../../store/actions/authActions';
-import { Redirect } from 'react-router-dom';
 import { makeAdmin } from '../../store/actions/userActions';
 
-class SignIn extends Component {
+class AdminInput extends Component {
   constructor() {
     super()
     this.state = {
@@ -18,18 +16,14 @@ class SignIn extends Component {
     this.setState({ [name]: value });
   }
 
-  handleSubmit = async (event) => {
+  handleSubmit = (event) => {
     event.preventDefault();
-    await this.props.signIn(this.state);
+    this.props.makeAdmin(this.state.email);
   }
 
   render() {
 
     const { authError, auth } = this.props;
-
-    if (auth.uid) {
-      return <Redirect to='/' />
-    }
 
     return (
       <div className='form-container'>
@@ -42,13 +36,6 @@ class SignIn extends Component {
             placeholder='email'
             name='email'
             value={this.state.email}
-            onChange={this.handleChange}
-          />
-          <input 
-            type='password'
-            placeholder='password'
-            name='password'
-            value={this.state.password}
             onChange={this.handleChange}
           />
           <button type='submit'>Sign In</button>
@@ -71,9 +58,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signIn: (creds) => dispatch(signIn(creds)),
     makeAdmin: (email) => dispatch(makeAdmin(email))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminInput);
