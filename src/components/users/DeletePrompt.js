@@ -1,7 +1,8 @@
 import React from 'react';
 
 const DeletePrompt = (props) => {
-  console.log(props)
+
+  const prompt = `are you sure you want to delete ${props.user.firstName} from your user list?`
 
   const deleteUser = (event) => {
     const uid = event.target.id;
@@ -11,7 +12,7 @@ const DeletePrompt = (props) => {
 
   return (
     <div className='delete-prompt'>
-      <p>Are you sure you want to delete?</p>
+      <p>{prompt}</p>
       <button
         id={props.user.uid}
         onClick={deleteUser}
