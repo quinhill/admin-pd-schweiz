@@ -1,9 +1,8 @@
 export const createCourse = (course) => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
-    console.log(course.time)
 
-    const dateTime = `${course.date} ${course.time}`
+    const dateTime = `${course.date} ${course.timeStart}`
     const date = new Date(dateTime)
 
     firestore.collection('courses').add({
@@ -25,12 +24,13 @@ export const updateCourse = (details) => {
   return (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
 
-    const dateTime = `${details.date} ${details.time}`;
+    const dateTime = `${details.date} ${details.timeStart}`;
 
     firestore.collection('courses').doc(details.id).set({
       title: details.title,
       location: details.location,
-      time: details.time,
+      timeStart: details.timeStart,
+      timeEnd: details.timeEnd,
       date: new Date(dateTime),
       cost: details.cost,
       description: details.description,

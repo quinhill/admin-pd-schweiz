@@ -6,6 +6,9 @@ import { createCourse, addExisting, resetState } from '../../store/actions/cours
 
 const initialState = {
   title: 'Einführungskurs',
+  date: '',
+  timeStart: '',
+  timeEnd: '',
   location: 'Schule Pfrundmatte, 1. Stock (Bibliothek), Meiringen',
   cost: '150Fr. pro Person. Babysitter Rabatt: 240Fr. für beide Eltern',
   description: 'Zum Wohlergehen der ganzen Familie mit der Positiven Disziplin'
@@ -17,7 +20,8 @@ class CreateCourse extends Component {
     this.state = {
       title: '',
       location: '',
-      time: '',
+      timeStart: '',
+      timeEnd: '',
       date: '',
       cost: '',
       description: ''
@@ -78,13 +82,29 @@ class CreateCourse extends Component {
             onChange={this.handleChange}
             value={this.state.date}
           />
+          <label htmlFor='startTime'>
+            Starts At:
+          </label>
           <input 
+            id='startTime'
             className='course-input'
             type='time'
-            placeholder='Time'
-            name='time'
+            placeholder='Start time'
+            name='timeStart'
             onChange={this.handleChange}
-            value={this.state.time}
+            value={this.state.timeStart}
+          />
+          <label htmlFor='endTime'>
+            Ends at:
+          </label>
+          <input 
+            id='endTime'
+            className='course-input'
+            type='time'
+            placeholder='End time'
+            name='timeEnd'
+            onChange={this.handleChange}
+            value={this.state.timeEnd}
           />
           <input 
             className='course-input'
