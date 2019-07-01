@@ -56,13 +56,17 @@ class CourseList extends Component {
 
     const current = new Date().getTime();
 
-    const courseList = courses ?
+    const upcoming = courses ?
       courses.filter((course) => {
-        if (!this.state.showPrev) {
-          return course.date > current;
-        } else {
-          return course;
-        }
+        const dateTime = parseInt(`${course.date.seconds}000`)
+        return dateTime > current;
+    }) :
+    null;
+
+    const previous = courses ?
+      courses.filter((course) => {
+        const dateTime = parseInt(`${course.date.seconds}000`)
+        return dateTime <= current;
     }) :
     null;
 
@@ -73,7 +77,7 @@ class CourseList extends Component {
     return (
       <div className='courselist-container'>
         { 
-          courseList ? courseList.map((course, index) => {
+          upcoming ? upcoming.map((course, index) => {
             if (course.id === courseId) {
               return (
                 <CourseDetails 
@@ -94,6 +98,36 @@ class CourseList extends Component {
               )
             }
           }) : null
+        }
+        {
+          showPrev ?
+            <div>
+              <p>Previous courses:</p> 
+              {
+                previous.map((course, index) => {
+                  if (course.id === courseId) {
+                    return (
+                      <CourseDetails
+                        course={selectedCourse}
+                        list={selectedParticipants}
+                        displayCourse={this.displayCourse}
+                        deleteCourse={this.deleteCourse}
+                        key={index}
+                      />
+                    )
+                  } else {
+                    return (
+                      <CourseTitle
+                        course={course} 
+                        displayCourse={this.displayCourse}
+                        key={index}
+                      />
+                    )
+                  }
+                })
+              }
+            </div>:
+            null
         }
         <button
           onClick={this.showPrev}
