@@ -12,6 +12,7 @@ class CourseList extends Component {
     super();
     this.state = {
       courseId: '',
+      showPrev: false
     }
   }
 
@@ -33,13 +34,17 @@ class CourseList extends Component {
     this.props.deleteCourse(id)
   }
 
+  showPrev = () => {
+    this.setState({showPrev: !this.state.showPrev})
+  }
+
   render() {
     if (!this.props.auth.uid) {
       return <Redirect to='/signin' />
     }
 
     const { courses, participants } = this.props;
-    const { courseId } = this.state;
+    const { courseId, showPrev } = this.state;
 
     const selectedCourse = courseId ?
       courses.find(course => course.id === courseId) :
@@ -51,10 +56,24 @@ class CourseList extends Component {
 
     const current = new Date().getTime();
 
+    const courseList = courses ?
+      courses.filter((course) => {
+        if (!this.state.showPrev) {
+          return course.date > current;
+        } else {
+          return course;
+        }
+    }) :
+    null;
+
+    const buttonText = showPrev ?
+      'Hide previous courses' :
+      'Show previous coursese'
+
     return (
       <div className='courselist-container'>
         { 
-          courses ? courses.map((course, index) => {
+          courseList ? courseList.map((course, index) => {
             if (course.id === courseId) {
               return (
                 <CourseDetails 
@@ -76,6 +95,11 @@ class CourseList extends Component {
             }
           }) : null
         }
+        <button
+          onClick={this.showPrev}
+        >
+          {buttonText}
+        </button>
       </div>
     )
   }
