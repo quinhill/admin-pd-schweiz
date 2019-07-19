@@ -83,8 +83,6 @@ class CreateCourse extends Component {
 
   render() {
 
-    console.log(this.state.date)
-
     const { updateMessage } = this.props;
 
     return(
