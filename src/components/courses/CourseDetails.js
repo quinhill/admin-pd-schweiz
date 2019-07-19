@@ -51,8 +51,12 @@ class CourseDetails extends Component {
               {date}
             </p>
             <p>
-              <span className='description'>Time: </span>
-              {course.time}
+              <span className='description'>Start Time: </span>
+              {course.timeStart}
+            </p>
+            <p>
+              <span className='description'>End Time: </span>
+              {course.timeEnd}
             </p>
             <p>
               <span className='description'>Location: </span>
@@ -123,7 +127,6 @@ export default compose(
       { 
         collection: 'course_participants',
         doc: props.course.id
-
       }
     ]
   })

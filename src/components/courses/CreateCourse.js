@@ -6,7 +6,7 @@ import { createCourse, addExisting, resetState } from '../../store/actions/cours
 
 const initialState = {
   title: 'Einführungskurs',
-  date: '',
+  date: [''],
   timeStart: '',
   timeEnd: '',
   location: 'Schule Pfrundmatte, 1. Stock (Bibliothek), Meiringen',
@@ -22,7 +22,9 @@ class CreateCourse extends Component {
       location: '',
       timeStart: '',
       timeEnd: '',
-      date: '',
+      events: 1,
+      date: [''],
+      dates: [''],
       cost: '',
       description: ''
     }
@@ -35,6 +37,34 @@ class CreateCourse extends Component {
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
+    })
+  }
+  
+  handleQuantityChange = (event) => {
+    const {dates} = this.state;
+    let number = event.target.value;
+    let eventsNumber = dates;
+    for (let i = dates.length; i < number; i++) {
+      eventsNumber.push('');
+    }
+    if (number < dates.length) {
+      eventsNumber = eventsNumber.filter((date, index) => {
+        return index < number
+      })
+    }
+    this.setState({
+      dates: eventsNumber,
+      events: number
+    });
+  }
+  
+  handleDateChange = (event) => {
+    let dates = this.state.dates;
+    const {id} = event.target;
+    dates[id] = event.target.value;
+    this.setState({ 
+      date: dates[0],
+      dates
     })
   }
 
@@ -53,6 +83,8 @@ class CreateCourse extends Component {
 
   render() {
 
+    console.log(this.state.date)
+
     const { updateMessage } = this.props;
 
     return(
@@ -66,22 +98,43 @@ class CreateCourse extends Component {
               <p className='error-message'>{updateMessage}</p> :
               null
           }
+          <label htmlFor='course-title'>Course Title:</label>
           <input 
             className='course-input'
+            id='course-title'
             type='text'
             placeholder='Course Title'
             name='title'
             onChange={this.handleChange}
             value={this.state.title}
           />
-          <input 
-            className='course-input'
-            type='date'
-            placeholder='Date'
-            name='date'
-            onChange={this.handleChange}
-            value={this.state.date}
+          <label htmlFor='event-quantity'>
+            How many events will there be for this course?
+          </label>
+          <input
+            type='number'
+            id='event-quantity'
+            name='events'
+            onChange={this.handleQuantityChange}
+            value={this.state.events}
           />
+          <label htmlFor='dates'>Dates:</label>
+          {
+            this.state.dates.map((event, index) => {
+              return (
+                <input 
+                  key={index}
+                  className='course-input'
+                  id={index}
+                  type='date'
+                  placeholder='Date'
+                  name='date'
+                  onChange={this.handleDateChange}
+                  value={this.state.dates[index]}
+                />
+              )
+            })
+          }
           <label htmlFor='startTime'>
             Starts At:
           </label>
