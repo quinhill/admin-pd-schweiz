@@ -111,6 +111,7 @@ class CreateCourse extends Component {
           </label>
           <input
             type='number'
+            min='1'
             id='event-quantity'
             name='events'
             onChange={this.handleQuantityChange}
