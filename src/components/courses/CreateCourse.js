@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
-import { createCourse, addExisting, resetState } from '../../store/actions/courseActions';
+import { 
+  createCourse, 
+  addExisting, 
+  resetState 
+} from '../../store/actions/courseActions';
 
 const initialState = {
   title: 'Einführungskurs',
@@ -71,7 +75,9 @@ class CreateCourse extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { courses } = this.props;
-    const existing = courses.find(course => course.date === this.state.date)
+    const existing = courses.find(
+      course => course.date === this.state.date
+    )
     if (existing) {
       this.props.addExisting();
     } else {

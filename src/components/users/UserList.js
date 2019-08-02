@@ -50,8 +50,6 @@ class UserList extends Component {
     }) :
     null
 
-    console.log(sortedUsers)
-
     return (
       <div className='user-container'>
         <input 

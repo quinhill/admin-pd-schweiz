@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateCourse, resetState } from '../../store/actions/courseActions'
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import { 
+  updateCourse, 
+  resetState, 
+  createCourse 
+} from '../../store/actions/courseActions'
 
 class EditCourse extends Component {
   constructor() {
@@ -8,7 +14,9 @@ class EditCourse extends Component {
     this.state = {
       title: '',
       date: '',
-      time: '',
+      dates: [''],
+      timeStart: '',
+      timeEnd: '',
       location: '',
       cost: '',
       participants: [],
@@ -22,7 +30,9 @@ class EditCourse extends Component {
       title, 
       description,
       date,
-      time,
+      dates,
+      timeStart,
+      timeEnd,
       location,
       cost,
       participants,
@@ -32,7 +42,9 @@ class EditCourse extends Component {
       title,
       description,
       date,
-      time,
+      dates,
+      timeStart,
+      timeEnd,
       location,
       cost,
       participants,
@@ -46,6 +58,15 @@ class EditCourse extends Component {
     });
   };
 
+  handleDateChange = (event) => {
+    let dates = this.state.dates;
+    const {id} = event.target;
+    dates[id] = event.target.value;
+    this.setState({ 
+      dates
+    })
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
     const details = {
@@ -55,6 +76,19 @@ class EditCourse extends Component {
     if (!existingValue) {
       this.props.updateCourse(details)
       this.props.editCourse();
+    }
+  }
+
+  saveAsNew = () => {
+    const { courses } = this.props;
+    const existing = courses.find(
+      course => course.date === this.state.date
+    )
+    if (existing) {
+      this.props.addExisting();
+    } else {
+      this.props.resetState();
+      this.props.createCourse(this.state);
     }
   }
 
@@ -96,20 +130,36 @@ class EditCourse extends Component {
             onChange={this.handleChange}
             name='title'
             value={this.state.title}
-            />
-          <input
-            className='course-input'
-            type='date'
-            onChange={this.handleChange}
-            name='date'
-            value={this.state.date}
-            />
+          />
+          {
+            this.state.dates.map((event, index) => {
+              return (
+                <input 
+                  key={index}
+                  className='course-input'
+                  id={index}
+                  type='date'
+                  placeholder='Date'
+                  name='date'
+                  onChange={this.handleDateChange}
+                  value={this.state.dates[index]}
+                />
+              )
+            })
+          }
           <input
             className='course-input'
             type='time'
             onChange={this.handleChange}
-            name='time'
-            value={this.state.time}
+            name='timeStart'
+            value={this.state.timeStart}
+          />
+          <input
+            className='course-input'
+            type='time'
+            onChange={this.handleChange}
+            name='timeEnd'
+            value={this.state.timeEnd}
           />
           <input
             className='course-input'
@@ -117,24 +167,30 @@ class EditCourse extends Component {
             onChange={this.handleChange}
             name='location'
             value={this.state.location}
-            />
+          />
           <input
             className='course-input'
             type='text'
             onChange={this.handleChange}
             name='cost'
             value={this.state.cost}
-            />
+          />
           <textarea
             onChange={this.handleChange}
             name='description'
             value={this.state.description}
-            />
+          />
           <button 
             type='submit'
             className='medium-button'
-            >
+          >
             Save Changes
+          </button>
+          <button
+            onClick={this.saveAsNew}
+            className='large-button'
+          >
+            Save as new course
           </button>
           <div>
             { updateSuccess ? <p>{updateSuccess}</p> : null }
@@ -156,9 +212,15 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    createCourse: (course) => dispatch(createCourse(course)),
     updateCourse: (details) => dispatch(updateCourse(details)),
     resetState: () => dispatch(resetState())
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditCourse);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect([
+    { collection: 'courses' }
+  ])
+)(EditCourse);

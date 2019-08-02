@@ -30,10 +30,21 @@ class CourseDetails extends Component {
 
   render() {
 
-    
+    moment.locale('de')
+
     const { course, list } = this.props;
 
-    const date = moment(course.date.toDate()).format('dddd, LL');
+    const courseDates = course.dates ? 
+    course.dates.map((date) => {
+      if (date.length) {
+        const dateString = new Date(date);
+        return moment(dateString).format('dddd, LL');
+      } else {
+        return null
+      }
+    }) :
+    null;
+
     return (
       <div className='course-container'>
         <button
@@ -46,10 +57,21 @@ class CourseDetails extends Component {
         <h3>{course.title}</h3>
         <div className='course-details-wrapper'>
           <div className='course-details'>
-            <p>
-              <span className='description'>Date: </span>
-              {date}
-            </p>
+            <p><span className='description'>Dates: </span></p>
+            {
+              courseDates ? 
+                courseDates.map((date, index) => {
+                  return (
+                    <p 
+                      className='card-p'
+                      key={index}
+                    >
+                      {date}
+                    </p>
+                  )
+                }) :
+                null
+            }
             <p>
               <span className='description'>Start Time: </span>
               {course.timeStart}
