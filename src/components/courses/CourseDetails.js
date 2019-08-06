@@ -4,12 +4,14 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
+import EditOldCourse from './EditOldCourse';
 
 class CourseDetails extends Component {
   constructor() {
     super();
     this.state = {
-      edit: false
+      editOld: false,
+      editNew: false
     }
   }
 
@@ -17,10 +19,21 @@ class CourseDetails extends Component {
     this.props.displayCourse(event.target.id)
   }
 
-  editCourse = () => {
-    this.setState({
-      edit: !this.state.edit
-    })
+  editCourse = (event) => {
+    const { courses } = this.props;
+    const { id } = event.target;
+    const course = courses.find(course => course.id === id);
+    if (course.timeStart) {
+      this.setState({
+        editNew: !this.state.editNew,
+        editOld: false
+      })
+    } else if (course.time) {
+      this.setState({
+        editOld: !this.state.editOld,
+        editNew: false
+      })
+    }
   }
 
   deleteCourse = (event) => {
@@ -109,14 +122,23 @@ class CourseDetails extends Component {
           </div>
         </div>
         { 
-          this.state.edit ? 
-            <EditCourse 
-              course={course} 
-              editCourse={this.editCourse} 
-            /> : 
-            null 
+          this.state.editNew ?
+            <EditCourse
+              course={course}
+              editCourse={this.editCourse}
+            /> :
+            null
+        }
+        {
+          this.state.editOld ?
+            <EditOldCourse
+              course={course}
+              editCourse={this.editCourse}
+            /> :
+            null
         }
         <button 
+          id={course.id}
           className='medium-button'
           onClick={this.editCourse}
         >
@@ -137,7 +159,8 @@ class CourseDetails extends Component {
 const mapStateToProps = (state) => {
   return {
     courseList: state.firestore.data.course_participants,
-    signedUp: state.firestore.ordered.users
+    signedUp: state.firestore.ordered.users,
+    courses: state.firestore.ordered.courses
   }
 }
 
@@ -149,7 +172,8 @@ export default compose(
       { 
         collection: 'course_participants',
         doc: props.course.id
-      }
+      },
+      { collection: 'courses' }
     ]
   })
 ) (CourseDetails);
