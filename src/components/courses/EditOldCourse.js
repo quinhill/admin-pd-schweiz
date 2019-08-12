@@ -213,17 +213,17 @@ class EditOldCourse extends Component {
           >
             Save Changes
           </button>
-          <button
-            onClick={this.saveAsNew}
-            className='large-button'
-          >
-            Save as new course
-          </button>
           <div>
             { updateSuccess ? <p>{updateSuccess}</p> : null }
             { updateError ? <p>{updateError}</p> : null }
           </div>
         </form>
+        <button
+          onClick={this.saveAsNew}
+          className='large-button'
+        >
+          Save as new course
+        </button>
       </div>
     )
   }

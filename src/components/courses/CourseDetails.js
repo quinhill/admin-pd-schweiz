@@ -36,6 +36,22 @@ class CourseDetails extends Component {
     }
   }
 
+  toggleEdit = id => {
+    const { courses } = this.props;
+    const course = courses.find(course => course.id === id);
+    if (course.timeStart) {
+      this.setState({
+        editNew: !this.state.editNew,
+        editOld: false
+      })
+    } else if (course.time) {
+      this.setState({
+        editOld: !this.state.editOld,
+        editNew: false
+      })
+    }
+  }
+
   deleteCourse = (event) => {
     const { id } = event.target;
     this.props.deleteCourse(id);
@@ -125,7 +141,7 @@ class CourseDetails extends Component {
           this.state.editNew ?
             <EditCourse
               course={course}
-              editCourse={this.editCourse}
+              toggleEdit={this.toggleEdit}
             /> :
             null
         }
@@ -133,7 +149,7 @@ class CourseDetails extends Component {
           this.state.editOld ?
             <EditOldCourse
               course={course}
-              editCourse={this.editCourse}
+              editCourse={this.toggleEdit}
             /> :
             null
         }

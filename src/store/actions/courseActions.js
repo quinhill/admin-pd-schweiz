@@ -32,7 +32,9 @@ export const updateCourse = (details) => {
   return (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
 
-    const dateTime = `${details.date} ${details.timeStart}`;
+    console.log(details)
+
+    const dateTime = `${details.dates[0]} ${details.timeStart}`;
 
     firestore.collection('courses').doc(details.id).set({
       title: details.title,
@@ -40,6 +42,7 @@ export const updateCourse = (details) => {
       timeStart: details.timeStart,
       timeEnd: details.timeEnd,
       date: new Date(dateTime),
+      dates: details.dates,
       cost: details.cost,
       description: details.description,
     }).then(() => {

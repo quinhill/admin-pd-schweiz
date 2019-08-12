@@ -16,6 +16,7 @@ class EditCourse extends Component {
       title: '',
       date: '',
       dates: [''],
+      events: 1,
       timeStart: '',
       timeEnd: '',
       location: '',
@@ -32,6 +33,7 @@ class EditCourse extends Component {
       description,
       date,
       dates,
+      events,
       timeStart,
       timeEnd,
       location,
@@ -39,11 +41,15 @@ class EditCourse extends Component {
       participants,
       id
     } = this.props.course;
+    const dateString = new Date(date.seconds * 1000).toISOString().slice(0, 10)
+    console.log(dateString)
+    const newDates = dates ? dates : [dateString];
     this.setState({
       title,
       description,
       date,
-      dates,
+      dates: newDates,
+      events,
       timeStart,
       timeEnd,
       location,
@@ -58,6 +64,24 @@ class EditCourse extends Component {
       [event.target.name]: event.target.value
     });
   };
+
+  handleQuantityChange = (event) => {
+    const {dates} = this.state;
+    let number = event.target.value;
+    let eventsNumber = dates.map(date => date);
+    for (let i = dates.length; i < number; i++) {
+      eventsNumber.push('');
+    }
+    if (number < dates.length) {
+      eventsNumber = eventsNumber.filter((date, index) => {
+        return index < number
+      })
+    }
+    this.setState({
+      dates: eventsNumber,
+      events: number
+    });
+  }
 
   handleDateChange = (event) => {
     const {id} = event.target;
@@ -76,13 +100,14 @@ class EditCourse extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
+    const { id } = event.target;
     const details = {
       ...this.state,
     };
     const existingValue = this.checkExisting(details)
     if (!existingValue) {
       this.props.updateCourse(details)
-      this.props.editCourse();
+      this.props.toggleEdit(id);
     }
   }
 
@@ -93,7 +118,6 @@ class EditCourse extends Component {
         return course.date === this.state.dates[0]
       })
     if (existing) {
-      console.log(this.state.date)
       this.props.addExisting();
     } else {
       this.props.createCourse(this.state);
@@ -126,10 +150,13 @@ class EditCourse extends Component {
       updateError,
     } = this.props;
 
+    console.log(this.state)
     return (
       <div className='course-form-wrapper'>
         <form 
           className='course-form'
+          onSubmit={this.handleSubmit}
+          id={this.props.course.id}
         >
           <input
             className='course-input'
@@ -137,6 +164,17 @@ class EditCourse extends Component {
             onChange={this.handleChange}
             name='title'
             value={this.state.title}
+          />
+          <label htmlFor='event-quantity'>
+            How many events will there be for this course?
+          </label>
+          <input
+            type='number'
+            min='1'
+            id='event-quantity'
+            name='events'
+            onChange={this.handleQuantityChange}
+            value={this.state.events}
           />
           {
             this.state.dates.map((event, index) => {
