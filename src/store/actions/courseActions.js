@@ -2,11 +2,19 @@ export const createCourse = (course) => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
 
-    const dateTime = `${course.date} ${course.timeStart}`
+    const dateTime = `${course.dates[0]} ${course.timeStart}`
     const date = new Date(dateTime)
 
+    console.log('fired')
+
     firestore.collection('courses').add({
-      ...course,
+      title: course.title,
+      dates: course.dates,
+      timeStart: course.timeStart,
+      timeEnd: course.timeEnd,
+      location: course.location,
+      cost: course.cost,
+      description: course.description,
       date,
       createdAt: new Date()
     }).then((res) => {

@@ -5,7 +5,8 @@ import { firestoreConnect } from 'react-redux-firebase';
 import { 
   updateCourse, 
   resetState, 
-  createCourse 
+  createCourse,
+  addExisting 
 } from '../../store/actions/courseActions'
 
 class EditCourse extends Component {
@@ -21,7 +22,7 @@ class EditCourse extends Component {
       cost: '',
       participants: [],
       description: '',
-      id: ''
+      id: '',
     }
   }
 
@@ -59,9 +60,15 @@ class EditCourse extends Component {
   };
 
   handleDateChange = (event) => {
-    let dates = this.state.dates;
     const {id} = event.target;
-    dates[id] = event.target.value;
+    const newDate = event.target.value;
+    let dates = this.state.dates.map((date, index) => {
+      if (index === parseInt(id)) {
+        return newDate;
+      } else {
+        return date;
+      }
+    });
     this.setState({ 
       dates
     })
@@ -82,12 +89,13 @@ class EditCourse extends Component {
   saveAsNew = () => {
     const { courses } = this.props;
     const existing = courses.find(
-      course => course.date === this.state.date
-    )
+      course => {
+        return course.date === this.state.dates[0]
+      })
     if (existing) {
+      console.log(this.state.date)
       this.props.addExisting();
     } else {
-      this.props.resetState();
       this.props.createCourse(this.state);
     }
   }
@@ -122,8 +130,7 @@ class EditCourse extends Component {
       <div className='course-form-wrapper'>
         <form 
           className='course-form'
-          onSubmit={this.handleSubmit}
-          >
+        >
           <input
             className='course-input'
             type='text'
@@ -181,22 +188,23 @@ class EditCourse extends Component {
             value={this.state.description}
           />
           <button 
-            type='submit'
+            onClick={this.handleSubmit}
+            id={this.props.course.id}
             className='medium-button'
           >
             Save Changes
-          </button>
-          <button
-            onClick={this.saveAsNew}
-            className='large-button'
-          >
-            Save as new course
           </button>
           <div>
             { updateSuccess ? <p>{updateSuccess}</p> : null }
             { updateError ? <p>{updateError}</p> : null }
           </div>
         </form>
+        <button
+          onClick={this.saveAsNew}
+          className='large-button'
+        >
+          Save as new course
+        </button>
       </div>
     )
   }
@@ -214,7 +222,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createCourse: (course) => dispatch(createCourse(course)),
     updateCourse: (details) => dispatch(updateCourse(details)),
-    resetState: () => dispatch(resetState())
+    resetState: () => dispatch(resetState()),
+    addExisting: () => dispatch(addExisting())
+
   }
 }
 
